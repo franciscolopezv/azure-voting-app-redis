@@ -10,11 +10,12 @@ node {
 
                 sh ‘docker-compose build’
 
-                docker.withRegistry('https://creuvoted01.azurecr.io', 'acr_credentials') {
-                
-                sh ‘docker push creuvoted01.azurecr.io/azure-vote-front:latest’
+                app = docker.build("creuvoted01.azurecr.io/azure-vote-front")
 
-                }
+                docker.withRegistry('https://creuvoted01.azurecr.io', 'acr_credentials') {
+                app.push("${env.BUILD_NUMBER}")
+                app.push("latest") 
+            }
         }
     }
 }
