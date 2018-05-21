@@ -105,4 +105,5 @@ ENV/
 *.terraform*
 *.terraform/*
 *.auto.tfvars
+*.tfstate*
 
