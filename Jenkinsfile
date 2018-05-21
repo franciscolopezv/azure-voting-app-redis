@@ -1,5 +1,7 @@
 node {
     dir('demo') {
+        def app
+
         // Mark the code checkout 'stage'....
         stage('Checkout from GitHub') {
             git url: 'https://github.com/franciscolopezv/azure-voting-app-redis'
