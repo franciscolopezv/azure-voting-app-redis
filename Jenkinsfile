@@ -9,15 +9,20 @@ node {
 
         // Build and Deploy to ACR 'stage'... 
         stage('Build and Push to Azure Container Registry') {
+                withCredentials(
+                        [string(credentialsId: 'azure-client-id', variable: 'azure_client_id'), 
+                        string(credentialsId: 'azure-client-secret', variable: 'azure_client_secret_value'), 
+                        string(credentialsId: 'azure-tenant-id', variable: 'azure_tenant_id_value')]) {
+                        echo "azure-tenant-id-value: ${azuretenantidvalue}" 
+                sh(script:'''az login --service-principal -u ${azure_client_id} -p ${azure_client_secret_value} --tenant ${azure_tenant_id_value}
+                      docker-compose build
+                      az acr login --name creuvoted01
+                      docker push creuvoted01.azurecr.io/azure-vote-front:latest
+                      az aks get-credentials --resource-group RGEUVOTED01 --name aksEUVOTEd01
+                      kubectl replace -f azure-vote-all-in-one-redis.yaml --force
+                ''', returnStdout:true)
 
-                sh ‘docker-compose build’
-
-                app = docker.build("creuvoted01.azurecr.io/azure-vote-front")
-
-                docker.withRegistry('https://creuvoted01.azurecr.io', 'acr_credentials') {
-                app.push("${env.BUILD_NUMBER}")
-                app.push("latest") 
-            }
+                }
         }
     }
 }
