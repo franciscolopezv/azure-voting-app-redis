@@ -13,7 +13,7 @@ node {
                         [string(credentialsId: 'azure-client-id', variable: 'azure_client_id'), 
                         string(credentialsId: 'azure-client-secret', variable: 'azure_client_secret_value'), 
                         string(credentialsId: 'azure-tenant-id', variable: 'azure_tenant_id_value')]) {
-                        echo "azure-tenant-id-value: ${azuretenantidvalue}" 
+
                 sh(script:'''az login --service-principal -u ${azure_client_id} -p ${azure_client_secret_value} --tenant ${azure_tenant_id_value}
                       docker-compose build
                       az acr login --name creuvoted01
