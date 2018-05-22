@@ -18,11 +18,17 @@ node {
                       docker-compose build
                       az acr login --name creuvoted01
                       docker push creuvoted01.azurecr.io/azure-vote-front:latest
-                      az aks get-credentials --resource-group RGEUVOTED01 --name aksEUVOTEd01
-                      kubectl replace -f azure-vote-all-in-one-redis.yaml --force
                 ''', returnStdout:true)
 
                 }
+        }
+
+        stage('Deliver new version of app') {
+
+                sh(script:'''
+                      az aks get-credentials --resource-group RGEUVOTED01 --name aksEUVOTEd01
+                      kubectl replace -f azure-vote-all-in-one-redis.yaml --force
+                ''', returnStdout:true)
         }
     }
 }
